@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 async function getApiToGeojson(url) {
+    console.log(url);
     try {
 
         const response = await axios.get(url);
@@ -50,14 +51,15 @@ async function getApiToGeojson(url) {
                     address: element.location.address,
                     state: element.location.state,
                     commune: element.location.commune,
-                    date:date,
-                    tsp:tsp,
-                    so2:so2,
-                    no2:no2,
+                    date: date,
+                    tsp: tsp,
+                    so2: so2,
+                    no2: no2,
                 }
             });
-            return geojson
         }
+        console.log("fetching successful");
+        return geojson
     } catch (error) {
         // Handle errors here (e.g., log or throw an error)
         console.error("Error fetching data:", error);
@@ -65,4 +67,4 @@ async function getApiToGeojson(url) {
     }
 }
 
-export default getApiToGeojson;
+export {getApiToGeojson};

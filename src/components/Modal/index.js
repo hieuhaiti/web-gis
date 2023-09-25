@@ -1,1 +1,1 @@
-export { default } from './Modal';
+export { CustomModal,SiveNav } from './Modal';
