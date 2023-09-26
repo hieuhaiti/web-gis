@@ -81,7 +81,6 @@ function App() {
     setToDate(caculationDate(fromDate))
   }, [fromDate]);
 
-
   useEffect(() => {
     if (map.current) return;
 
