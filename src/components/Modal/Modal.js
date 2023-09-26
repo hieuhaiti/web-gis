@@ -36,6 +36,7 @@ function CustomModal(props) {
                 <Modal.Title>{modalTitle}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {/* long */}
                 {modalBody}
                 {/* <Chart
                 data={props.dataChart}
