@@ -67,7 +67,7 @@ function App() {
   useEffect(() => {
     if (dataSource === null) {
       // Fetch data and setDataSource only when it's null
-      getApiToGeojson(`https://environment-admin.onrender.com/api/v1/stations/airs/filter?fromdate=${fromDate}&todate=${toDate}`)
+      getApiToGeojson(`https://environment-admin.onrender.com/api/v1/stations/airs/filter?fromdate=2018-09&todate=2018-10`)
         .then((data) => {
           setDataSource(data);
         })
