@@ -16,7 +16,6 @@ function caculationDate(inputDateTypeString) {
 }
 
 function AddFilter(nameOfRow) {
-console.log(11111111111);
     let div = document.querySelector(`#${nameOfRow}`).parentElement;
 
     function filterIcon() {

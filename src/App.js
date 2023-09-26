@@ -50,20 +50,18 @@ function App() {
   const [showCustomModal, setShowCustomModal] = useState(false);
   const [dataCustomModal, setDataCustomModal] = useState(null);
 
-
+  let showSideNava = false
+  let navigationInitializeda = false
   const [showSideNav, setShowSideNav] = useState(false);
   const [dataSideNav, setDataSideNav] = useState(null);
 
-  const [navigationInitialized, setNavigationInitialized] = useState(false);
 
   const [fromDate, setFromDate] = useState('2020-12');
   const [toDate, setToDate] = useState(caculationDate(fromDate));
 
   useEffect(() => {
-    console.log(showSideNav);
-
-  }, [showSideNav]);
-
+    console.log(showSideNava)
+  }, [showSideNava]);
   useEffect(() => {
     if (dataSource === null) {
       // Fetch data and setDataSource only when it's null
@@ -186,9 +184,7 @@ function App() {
     })
 
     map.current.on('idle', () => {
-      if (navigationInitialized) {
-        return;
-      }
+      if (navigationInitializeda) return;
       const suffixes_arr = ['test'];
       const prefix_arr = ["unclustered-point-", "clusters-", "cluster-count-"];
       let allLayersId = {};
@@ -242,23 +238,17 @@ function App() {
       layerFilter.forEach(element => {
         let filter = AddFilter(element)
         filter.onclick = () => {
-          console.log("showSideNav "+showSideNav);
-          console.log("navigationInitialized "+navigationInitialized);
-          setShowSideNav(!showSideNav);
+          showSideNava = !showSideNava;
 
-
-          // if (!showSideNav) {
-          //   openNav()
-          //   return
-          // }
-          // if (!showSideNav) {
-          //   closeNav()
-
-          // }
+          if (showSideNava) {
+            openNav()
+            return
+          }
+          closeNav()
           return
         }
       });
-      setNavigationInitialized(true);
+      navigationInitializeda = true;
     })
 
     // set event layer
@@ -313,19 +303,13 @@ function App() {
     document.querySelector(".closebtn").onclick = () => closeNav();
 
     function openNav() {
-      setShowSideNav(true);
-      console.log("ShowSideNav(true)");
       document.querySelector("#mySidenav").style.width = "250px";
       document.querySelector(".container").style.marginLeft = "250px";
-      return
     }
 
     function closeNav() {
-      setShowSideNav(false);
-      console.log("ShowSideNav(false)");
       document.querySelector("#mySidenav").style.width = "0";
       document.querySelector(".container").style.marginLeft = "0";
-      return
     }
 
   })

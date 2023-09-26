@@ -1,7 +1,7 @@
 
 import "./Modal.css";
 import React from 'react';
-import { Modal, Accordion } from 'react-bootstrap';
+import { Modal, Accordion, Offcanvas } from 'react-bootstrap';
 import Chart from './../Chart';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -50,7 +50,7 @@ function SiveNav(props) {
         <div id="mySidenav" class="sidenav">
             <div class="closebtn" >&times;</div>
 
-            <Accordion flush style={{backgroundColor:"black"}}>
+            <Accordion flush style={{ backgroundColor: "black" }}>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Chọn tháng</Accordion.Header>
                     <Accordion.Body>
@@ -67,7 +67,7 @@ function SiveNav(props) {
                     </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
-                    <Accordion.Header>Accordion Item #2</Accordion.Header>
+                    <Accordion.Header>Chọn kiểu dữ liệu</Accordion.Header>
                     <Accordion.Body>
 
                     </Accordion.Body>
@@ -76,5 +76,18 @@ function SiveNav(props) {
         </div>
     );
 }
+function offCanvas(props) {
+    return (
+        <Offcanvas show={props.show} onHide={props.handleClose}>
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+                Some text as placeholder. In real life you can have the elements you
+                have chosen. Like, text, images, lists, etc.
+            </Offcanvas.Body>
+        </Offcanvas>
+    )
+}
 
-export { CustomModal, SiveNav };
+export { CustomModal, SiveNav, offCanvas };
