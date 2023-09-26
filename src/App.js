@@ -4,7 +4,8 @@ import mapboxgl from 'mapbox-gl';
 import { layerControlGrouped } from 'mapbox-layer-control';
 
 
-import { CustomModal, SiveNav } from './components/Modal';
+import CustomModal from './components/Modal';
+import { SideNav } from './components/SideNav';
 
 
 
@@ -50,18 +51,16 @@ function App() {
   const [showCustomModal, setShowCustomModal] = useState(false);
   const [dataCustomModal, setDataCustomModal] = useState(null);
 
-  let showSideNava = false
-  let navigationInitializeda = false
-  const [showSideNav, setShowSideNav] = useState(false);
-  const [dataSideNav, setDataSideNav] = useState(null);
+  let showSideNav = false
+  let navigationInitialized = false
 
 
   const [fromDate, setFromDate] = useState('2020-12');
   const [toDate, setToDate] = useState(caculationDate(fromDate));
 
   useEffect(() => {
-    console.log(showSideNava)
-  }, [showSideNava]);
+    console.log(showSideNav)
+  }, [showSideNav]);
   useEffect(() => {
     if (dataSource === null) {
       // Fetch data and setDataSource only when it's null
@@ -184,7 +183,7 @@ function App() {
     })
 
     map.current.on('idle', () => {
-      if (navigationInitializeda) return;
+      if (navigationInitialized) return;
       const suffixes_arr = ['test'];
       const prefix_arr = ["unclustered-point-", "clusters-", "cluster-count-"];
       let allLayersId = {};
@@ -238,9 +237,9 @@ function App() {
       layerFilter.forEach(element => {
         let filter = AddFilter(element)
         filter.onclick = () => {
-          showSideNava = !showSideNava;
+          showSideNav = !showSideNav;
 
-          if (showSideNava) {
+          if (showSideNav) {
             openNav()
             return
           }
@@ -248,7 +247,7 @@ function App() {
           return
         }
       });
-      navigationInitializeda = true;
+      navigationInitialized = true;
     })
 
     // set event layer
@@ -328,8 +327,8 @@ function App() {
         }}
         dataChart={userData}
       />
-      <SiveNav
-        dataSideNav={dataSideNav}
+      <SideNav
+        // dataSideNav={}
         date={fromDate}
         SetDate={(e) => {
           const year = e.getFullYear();
