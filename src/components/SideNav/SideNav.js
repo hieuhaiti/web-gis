@@ -1,7 +1,6 @@
 import "./SideNav.css";
 import React from 'react';
 import { Accordion, Offcanvas } from 'react-bootstrap';
-import Chart from '../Chart';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 

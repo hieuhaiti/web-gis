@@ -1,16 +1,22 @@
 import React, { useRef, useEffect, useState } from 'react';
-import markerIcon2xBlue from './assets/images/marker-icon-2x-blue.png';
 import mapboxgl from 'mapbox-gl';
 import { layerControlGrouped } from 'mapbox-layer-control';
 
+import markerIcon2xBlue from './assets/images/marker-icon-2x-blue.png';
+import markerIcon2xGreen from './assets/images/marker-icon-2x-green.png';
+import markerIcon2xYellow from './assets/images/marker-icon-2x-yellow.png';
+import markerIcon2xRed from './assets/images/marker-icon-2x-red.png';
+import markerIcon2xGrey from './assets/images/marker-icon-2x-grey.png';
+import markerIcon2xOrange from './assets/images/marker-icon-2x-orange.png';
+import markerIcon2xViolet from './assets/images/marker-icon-2x-violet.png';
 
 import CustomModal from './components/Modal';
 import { SideNav } from './components/SideNav';
 
 
 
-import { getApiToGeojson } from './utils/api.js';
-import { caculationDate, AddFilter } from './utils/help.js';
+import { GetDataToGeojson } from './utils/api.js';
+import { CaculationDate, AddFilter } from './utils/help.js';
 
 
 
@@ -56,26 +62,25 @@ function App() {
 
 
   const [fromDate, setFromDate] = useState('2020-12');
-  const [toDate, setToDate] = useState(caculationDate(fromDate));
+  const [toDate, setToDate] = useState(CaculationDate(fromDate));
 
-  useEffect(() => {
-    console.log(showSideNav)
-  }, [showSideNav]);
+
   useEffect(() => {
     if (dataSource === null) {
       // Fetch data and setDataSource only when it's null
-      getApiToGeojson(`https://environment-admin.onrender.com/api/v1/stations/airs/filter?fromdate=${fromDate}&todate=${toDate}`)
+      GetDataToGeojson(fromDate, toDate)
         .then((data) => {
+          console.log(data);
           setDataSource(data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     }
-  }); // Provide an empty dependency array
+  }, [toDate]); // Provide an empty dependency array
 
   useEffect(() => {
-    setToDate(caculationDate(fromDate))
+    setToDate(CaculationDate(fromDate))
   }, [fromDate]);
 
 
@@ -92,10 +97,12 @@ function App() {
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right")
 
   })
-
+  let mainPollutant = "tsp"
   useEffect(() => {
     if (dataSource === null) return;
     if (map.current.getSource("test")) return;
+    console.log("load source");
+
     map.current.on('load', function () {
       // load source map
       map.current.addSource('test', {
@@ -105,6 +112,60 @@ function App() {
         clusterMaxZoom: 11, // Max zoom to cluster points on
         clusterRadius: 40, // Radius of each cluster when clustering points (defaults to 50)
       })
+      // load img
+      map.current.loadImage(
+        markerIcon2xGreen,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-green', image)
+        });
+
+
+      map.current.loadImage(
+        markerIcon2xYellow,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-yellow', image)
+        });
+
+
+      map.current.loadImage(
+        markerIcon2xRed,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-red', image)
+        });
+
+      map.current.loadImage(
+        markerIcon2xBlue,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-blue', image)
+        });
+      map.current.loadImage(
+        markerIcon2xGrey,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-grey', image)
+        });
+      map.current.loadImage(
+        markerIcon2xOrange,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-orange', image)
+        });
+      map.current.loadImage(
+        markerIcon2xViolet,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-violet', image)
+        });
+      map.current.loadImage(
+        markerIcon2xGreen,
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-green', image)
+        });
       map.current.loadImage(
         markerIcon2xBlue,
         (error, image) => {
@@ -158,32 +219,143 @@ function App() {
             }
           });
 
-          map.current.addLayer({
-            id: 'unclustered-point-test',
-            type: 'symbol',
-            source: 'test',
-            filter: ['!', ['has', 'point_count']],
-            layout: {
-              'visibility': 'visible',
-              'icon-image': 'custom-marker-blue',
-              'icon-size': 0.3,
-              // get the title name from the source's "title" property
-              'text-field': ['get', 'address'],
-              'text-font': [
-                'Open Sans Semibold',
-                'Arial Unicode MS Bold'
-              ],
-              'text-offset': [0, 1.25],
-              'text-anchor': 'top',
-              'text-size': 10
-            }
-          });
+          // map.current.addLayer({
+          //   id: 'unclustered-point-test',
+          //   type: 'symbol',
+          //   source: 'test',
+          //   filter: ['!', ['has', 'point_count']],
+          //   layout: {
+          //     'visibility': 'visible',
+          //     'icon-image': [
+          //       ['case',
+          //         ['==', ['get', { mainPollutant }], 6],
+          //         `custom-marker-violet`,
+          //         ['==', ['get', { mainPollutant }], 5],
+          //         `custom-marker-red`,
+          //         ['==', ['get', { mainPollutant }], 4],
+          //         `custom-marker-grey`,
+          //         ['==', ['get', { mainPollutant }], 3],
+          //         `custom-marker-yellow`,
+          //         ['==', ['get', { mainPollutant }], 2],
+          //         `custom-marker-green`,
+          //         ['==', ['get', { mainPollutant }], 1],
+          //         `custom-marker-blue`,
+          //       ],
+          //     ],
+          //     'icon-size': 0.3,
+          //     // get the title name from the source's "title" property
+          //     'text-field': ['get', 'address'],
+          //     // 'text-field': ['get', 'address',['get', 'date']],
+          //     'text-font': [
+          //       'Open Sans Semibold',
+          //       'Arial Unicode MS Bold'
+          //     ],
+          //     'text-offset': [0, 1.25],
+          //     'text-anchor': 'top',
+          //     'text-size': 10
+          //   }
+          // });
+
+          // map.current.addLayer({
+          //   id: 'unclustered-point-test',
+          //   type: 'symbol',
+          //   source: 'test',
+          //   filter: ['!', ['has', 'point_count']],
+          //   layout: {
+          //     'visibility': 'visible',
+          //     'icon-image': `custom-marker-blue`,
+          //     'icon-size': 0.3,
+          //     // get the title name from the source's "title" property
+          //     'text-field': ['get', 'address'],
+          //     // 'text-field': ['get', 'address',['get', 'date']],
+          //     'text-font': [
+          //       'Open Sans Semibold',
+          //       'Arial Unicode MS Bold'
+          //     ],
+          //     'text-offset': [0, 1.25],
+          //     'text-anchor': 'top',
+          //     'text-size': 10,
+          //     'paint': {
+          //       'icon-color': [
+          //         'match', // Use the 'match' expression: https://docs.mapbox.com/style-spec/reference/expressions/#match
+          //         ['get', "tsp",['get', "value"]], // Use the result 'STORE_TYPE' property
+          //         '1',
+          //         'green',
+          //         '2',
+          //         'yellow',
+          //         '3',
+          //         'orange',
+          //         '4',
+          //         'grey',
+          //         '5',
+          //         'red',
+          //         '6',
+          //         'violet',
+
+          //         'blue' // any other store type
+          //       ]
+          //     }
+          //   }
+          // });
 
         })
     })
 
     map.current.on('idle', () => {
       if (navigationInitialized) return;
+      const custom_marker_red = map.current.hasImage("custom-marker-red");
+      const custom_marker_blue = map.current.hasImage("custom-marker-blue");
+      const custom_marker_grey = map.current.hasImage("custom-marker-grey");
+      const custom_marker_orange = map.current.hasImage("custom-marker-orange");
+      const custom_marker_viole = map.current.hasImage("custom-marker-violet");
+      const custom_marker_green = map.current.hasImage("custom-marker-green");
+
+      if (custom_marker_red
+        && custom_marker_blue
+        && custom_marker_grey
+        && custom_marker_orange
+        && custom_marker_viole
+        && custom_marker_green
+      ) {
+        console.log(mainPollutant);
+        map.current.addLayer({
+          id: 'unclustered-point-test',
+          type: 'symbol',
+          source: 'test',
+          filter: ['!', ['has', 'point_count']],
+          layout: {
+            'visibility': 'visible',
+            'icon-image': [
+              ['case',
+                ['==', ['get', "value",['get', { mainPollutant }]], 6],
+                `custom-marker-violet`,
+                ['==', ['get', "value",['get', { mainPollutant }]], 5],
+                `custom-marker-red`,
+                ['==', ['get', "value",['get', { mainPollutant }]], 4],
+                `custom-marker-grey`,
+                ['==', ['get', "value",['get', { mainPollutant }]], 3],
+                `custom-marker-yellow`,
+                ['==', ['get', "value",['get', { mainPollutant }]], 2],
+                `custom-marker-green`,
+                ['==', ['get', "value",['get', { mainPollutant }]], 1],
+                `custom-marker-blue`,
+              ],
+            ],
+            'icon-size': 0.3,
+            // get the title name from the source's "title" property
+            'text-field': ['get', 'address'],
+            // 'text-field': ['get', 'address',['get', 'date']],
+            'text-font': [
+              'Open Sans Semibold',
+              'Arial Unicode MS Bold'
+            ],
+            'text-offset': [0, 1.25],
+            'text-anchor': 'top',
+            'text-size': 10
+          }
+        });
+      }
+
       const suffixes_arr = ['test'];
       const prefix_arr = ["unclustered-point-", "clusters-", "cluster-count-"];
       let allLayersId = {};
@@ -311,7 +483,7 @@ function App() {
       document.querySelector(".container").style.marginLeft = "0";
     }
 
-  })
+  }, [dataSource])
 
   return (
     <div>

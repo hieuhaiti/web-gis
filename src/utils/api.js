@@ -1,18 +1,27 @@
 import axios from 'axios';
 
-async function getApiToGeojson(url) {
-    console.log(url);
+
+
+
+
+
+const url = 'https://environment-admin.onrender.com/api/v1/stations/airs/'
+
+
+async function GetDataToGeojson(fromDate, toDate) {
+    let urlFilter = url + `filter?fromdate=${fromDate}&todate=${toDate}`
+    console.log(urlFilter);
     try {
 
-        const response = await axios.get(url);
-        const data_api = response.data;
+        const response = await axios.get(urlFilter);
+        const data_Api = response.data;
         const geojson = {
             type: "FeatureCollection",
             features: []
         };
 
-        for (let index = 0; index < data_api.length; index++) {
-            const element = data_api[index];
+        for (let index = 0; index < data_Api.length; index++) {
+            const element = data_Api[index];
 
             // Parse the JSON strings into JavaScript objects
             const date = {
@@ -67,4 +76,35 @@ async function getApiToGeojson(url) {
     }
 }
 
-export {getApiToGeojson};
+
+async function GetDataByAddress(Address) {
+    let urlFilter = url + `filter?address=${Address}`
+    console.log(urlFilter);
+    try {
+
+        const response = await axios.get(urlFilter);
+        console.log("fetching successful");
+        return response.data
+    } catch (error) {
+        // Handle errors here (e.g., log or throw an error)
+        console.error("Error fetching data:", error);
+        throw error; // Rethrow the error to be handled elsewhere if needed
+    }
+
+}
+
+async function GetAllDataByAddress(Address, fromDate, toDate, mainPollutant) {
+    let urlFilter = url + `filter?address=${Address}&fromDate=${fromDate}&toDate=${toDate}`
+    console.log(urlFilter);
+    try {
+
+        const response = await axios.get(urlFilter);
+        console.log("fetching successful");
+        return response.data
+    } catch (error) {
+        // Handle errors here (e.g., log or throw an error)
+        console.error("Error fetching data:", error);
+        throw error; // Rethrow the error to be handled elsewhere if needed
+    }
+}
+export { GetDataToGeojson, GetDataByAddress};
