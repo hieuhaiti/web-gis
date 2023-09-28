@@ -13,16 +13,10 @@ import markerIcon2xViolet from './assets/images/marker-icon-2x-violet.png';
 import CustomModal from './components/Modal';
 import { SideNav } from './components/SideNav';
 
-
-
 import { GetDataToGeojson } from './utils/api.js';
 import { CaculationDate, AddFilter } from './utils/help.js';
 
-
-
-
 import { UserData } from "./Data";
-
 
 
 mapboxgl.accessToken = process.env.REACT_APP_TOKEN;
@@ -59,7 +53,7 @@ function App() {
 
   let showSideNav = false
   let navigationInitialized = false
-
+  let mainPollutant = "tsp"
 
   const [fromDate, setFromDate] = useState('2020-12');
   const [toDate, setToDate] = useState(CaculationDate(fromDate));
@@ -77,7 +71,7 @@ function App() {
           console.error("Error fetching data:", error);
         });
     }
-  }, [toDate]); // Provide an empty dependency array
+  }); // Provide an empty dependency array
 
   useEffect(() => {
     setToDate(CaculationDate(fromDate))
@@ -97,7 +91,6 @@ function App() {
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right")
 
   })
-  let mainPollutant = "tsp"
   useEffect(() => {
     if (dataSource === null) return;
     if (map.current.getSource("test")) return;
@@ -142,82 +135,35 @@ function App() {
           if (error) throw error;
           map.current.addImage('custom-marker-blue', image)
         });
+
       map.current.loadImage(
         markerIcon2xGrey,
         (error, image) => {
           if (error) throw error;
           map.current.addImage('custom-marker-grey', image)
         });
+
       map.current.loadImage(
         markerIcon2xOrange,
         (error, image) => {
           if (error) throw error;
           map.current.addImage('custom-marker-orange', image)
         });
+
       map.current.loadImage(
         markerIcon2xViolet,
         (error, image) => {
           if (error) throw error;
           map.current.addImage('custom-marker-violet', image)
         });
-      map.current.loadImage(
-        markerIcon2xGreen,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-green', image)
-        });
+
+
       map.current.loadImage(
         markerIcon2xBlue,
         (error, image) => {
           if (error) throw error;
           map.current.addImage('custom-marker-blue', image)
-          map.current.addLayer({
-            id: 'clusters-test',
-            type: 'circle', //symbol
-            source: 'test',
-            filter: ['has', 'point_count'],
-            layout: {
-              'visibility': 'visible',
-            },
-            // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
-            // with three steps to implement three types of circles:
-            //   * Blue, 20px circles when point count is less than 100
-            //   * Yellow, 30px circles when point count is between 100 and 750
-            //   * Pink, 40px circles when point count is greater than or equal to 750
-            paint: {
-              'circle-color': [
-                'step',
-                ['get', 'point_count'],
-                '#3399ff',
-                100,
-                '#3399ff',
-                750,
-                '#3399ff'
-              ],
-              'circle-radius': [
-                'step',
-                ['get', 'point_count'],
-                20,
-                100,
-                30,
-                750,
-                40
-              ]
-            }
-          });
 
-          map.current.addLayer({
-            id: 'cluster-count-test',
-            type: 'symbol',
-            source: 'test',
-            filter: ['has', 'point_count'],
-            layout: {
-              'visibility': 'visible',
-              'text-field': ['get', 'point_count_abbreviated'],
-              'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-              'text-size': 12
-            }
-          });
 
           // map.current.addLayer({
           //   id: 'unclustered-point-test',
@@ -317,7 +263,53 @@ function App() {
         && custom_marker_viole
         && custom_marker_green
       ) {
-        console.log(mainPollutant);
+        map.current.addLayer({
+          id: 'clusters-test',
+          type: 'circle', //symbol
+          source: 'test',
+          filter: ['has', 'point_count'],
+          layout: {
+            'visibility': 'visible',
+          },
+          // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
+          // with three steps to implement three types of circles:
+          //   * Blue, 20px circles when point count is less than 100
+          //   * Yellow, 30px circles when point count is between 100 and 750
+          //   * Pink, 40px circles when point count is greater than or equal to 750
+          paint: {
+            'circle-color': [
+              'step',
+              ['get', 'point_count'],
+              '#3399ff',
+              100,
+              '#3399ff',
+              750,
+              '#3399ff'
+            ],
+            'circle-radius': [
+              'step',
+              ['get', 'point_count'],
+              20,
+              100,
+              30,
+              750,
+              40
+            ]
+          }
+        });
+
+        map.current.addLayer({
+          id: 'cluster-count-test',
+          type: 'symbol',
+          source: 'test',
+          filter: ['has', 'point_count'],
+          layout: {
+            'visibility': 'visible',
+            'text-field': ['get', 'point_count_abbreviated'],
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 12
+          }
+        });
         map.current.addLayer({
           id: 'unclustered-point-test',
           type: 'symbol',
@@ -325,26 +317,43 @@ function App() {
           filter: ['!', ['has', 'point_count']],
           layout: {
             'visibility': 'visible',
-            'icon-image': [
-              ['case',
-                ['==', ['get', "value",['get', { mainPollutant }]], 6],
-                `custom-marker-violet`,
-                ['==', ['get', "value",['get', { mainPollutant }]], 5],
-                `custom-marker-red`,
-                ['==', ['get', "value",['get', { mainPollutant }]], 4],
-                `custom-marker-grey`,
-                ['==', ['get', "value",['get', { mainPollutant }]], 3],
-                `custom-marker-yellow`,
-                ['==', ['get', "value",['get', { mainPollutant }]], 2],
-                `custom-marker-green`,
-                ['==', ['get', "value",['get', { mainPollutant }]], 1],
-                `custom-marker-blue`,
+            // 'icon-image': [
+            //   ['case',
+            //     ['==', ['get', "value", ['get', { mainPollutant }]], 6],
+            //     `custom-marker-violet`,
+            //     ['==', ['get', "value", ['get', { mainPollutant }]], 5],
+            //     `custom-marker-red`,
+            //     ['==', ['get', "value", ['get', { mainPollutant }]], 4],
+            //     `custom-marker-grey`,
+            //     ['==', ['get', "value", ['get', { mainPollutant }]], 3],
+            //     `custom-marker-orange`,
+            //     ['==', ['get', "value", ['get', { mainPollutant }]], 2],
+            //     `custom-marker-yellow`,
+            //     ['==', ['get', "value", ['get', { mainPollutant }]], 1],
+            //     `custom-marker-green`,
+            //     `custom-marker-blue`,
+            //   ],
+            // ],
+
+            'icon-image':
+              [
+                'case',
+                ['==', ['get', 'result',['get', 'tsp']], 6],
+                'custom-marker-violet',
+                ['==', ['get', 'result',['get', 'tsp']], 5],
+                'custom-marker-red',
+                ['==', ['get', 'result',['get', 'tsp']], 4],
+                'custom-marker-grey',
+                ['==', ['get', 'result',['get', 'tsp']], 3],
+                'custom-marker-orange',
+                ['==', ['get', 'result',['get', 'tsp']], 2],
+                'custom-marker-yellow',
+                ['==', ['get', 'result',['get', 'tsp']], 1],
+                'custom-marker-green',
+                'custom-marker-blue',
               ],
-            ],
             'icon-size': 0.3,
-            // get the title name from the source's "title" property
             'text-field': ['get', 'address'],
-            // 'text-field': ['get', 'address',['get', 'date']],
             'text-font': [
               'Open Sans Semibold',
               'Arial Unicode MS Bold'
