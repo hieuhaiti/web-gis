@@ -48,4 +48,4 @@ function offCanvas(props) {
         </Offcanvas>
     )
 }
-export {SideNav, offCanvas};
+export { SideNav, offCanvas };

@@ -1,3 +1,43 @@
+// Import Image
+
+import greenFace from "../assets/images/ic-face-green.svg";
+import yellowFace from "../assets/images/ic-face-yellow.svg";
+import orangeFace from "../assets/images/ic-face-orange.svg";
+import greyFace from "../assets/images/ic-face-grey.svg";
+import redFace from "../assets/images/ic-face-red.svg";
+import violetFace from "../assets/images/ic-face-purple.svg";
+
+// Import recommendations
+
+import recommendationGreenSport from "../assets/images/recommendationGreenSport.svg";
+import recommendationGreenWindow from "../assets/images/recommendationGreenWindow.svg";
+
+import recommendationGreyAirpurifier from "../assets/images/recommendationGreyAirpurifier.svg";
+import recommendationGreyMask from "../assets/images/recommendationGreyMask.svg";
+import recommendationGreySport from "../assets/images/recommendationGreySport.svg";
+import recommendationGreyWindow from "../assets/images/recommendationGreyWindow.svg";
+
+import recommendationOrangeAirpurifier from "../assets/images/recommendationOrangeAirpurifier.svg";
+import recommendationOrangeMask from "../assets/images/recommendationOrangeMask.svg";
+import recommendationOrangeSport from "../assets/images/recommendationOrangeSport.svg";
+import recommendationOrangeWindow from "../assets/images/recommendationOrangeWindow.svg";
+
+import recommendationPurpleAirpurifier from "../assets/images/recommendationPurpleAirpurifier.svg";
+import recommendationPurpleMask from "../assets/images/recommendationPurpleMask.svg";
+import recommendationPurpleSport from "../assets/images/recommendationPurpleSport.svg";
+import recommendationPurpleWindow from "../assets/images/recommendationPurpleWindow.svg";
+
+import recommendationRedAirpurifier from "../assets/images/recommendationRedAirpurifier.svg";
+import recommendationRedMask from "../assets/images/recommendationRedMask.svg";
+import recommendationRedSport from "../assets/images/recommendationRedSport.svg";
+import recommendationRedWindow from "../assets/images/recommendationRedWindow.svg";
+
+import recommendationYellowAirpurifier from "../assets/images/recommendationYellowAirpurifier.svg";
+import recommendationYellowMask from "../assets/images/recommendationYellowMask.svg";
+import recommendationYellowSport from "../assets/images/recommendationYellowSport.svg";
+import recommendationYellowWindow from "../assets/images/recommendationYellowWindow.svg";
+
+
 
 function CaculationDate(inputDateTypeString) {
     const [yearStr, monthStr] = inputDateTypeString.split('-');
@@ -63,66 +103,80 @@ function GetMainPollution(Data) {
 
 function GetColorOfMarker(data) {
     if (data === "0") {
-        return ["blue", '#3399ff', "#000000", '']
+        return ["blue",
+        '#3399ff',
+        "#ffffff", "", "", "", "", "", ""]
     }
     if (data === 1) {
-        return ["green", '#4cb84c', "#000000", 'Chất lượng ko khí ở mức tốt']
+        return ["green",
+        '#4cb84c',
+        "#ffffff",
+        'Chất lượng ko khí ở mức tốt',
+        greenFace, " ", " ",
+        recommendationGreenSport,
+        recommendationGreenWindow
+    ]
     }
     else if (data === 2) {
-        return ['yellow', '#ffff00', "#000000", 'Chất lượng ko khí ở mức trung bình']
+        return ['yellow',
+        '#ffff00',
+        "#ffffff",
+        'Chất lượng ko khí ở mức trung bình',
+        yellowFace,
+        recommendationYellowAirpurifier,
+        recommendationYellowMask,
+        recommendationYellowSport,
+        recommendationYellowWindow
+    ]
     }
     else if (data === 3) {
-        return ['orange', '#ffa500', "#000000", 'Chất lượng ko khí ở mức kém']
+        return ['orange',
+        '#ffa500',
+        "#ffffff",
+        'Chất lượng ko khí ở mức kém',
+        orangeFace,
+        recommendationOrangeAirpurifier,
+        recommendationOrangeMask,
+        recommendationOrangeSport,
+        recommendationOrangeWindow
+    ]
     }
     else if (data === 4) {
-        return ['grey', '#808080', "#ffffff", 'Chất lượng ko khí xấu']
+        return ['grey',
+        '#808080',
+        "#ffffff",
+        'Chất lượng ko khí xấu',
+        greyFace,
+        recommendationGreyAirpurifier,
+        recommendationGreyMask,
+        recommendationGreySport,
+        recommendationGreyWindow
+    ]
     }
     else if (data === 5) {
-        return ['red', '#d81e1e', "#ffffff", 'Ô nhiễm không khí ở mức rất xấu']
+        return ['red',
+        '#d81e1e',
+        "#ffffff",
+        'Ô nhiễm không khí ở mức rất xấu',
+        redFace,
+        recommendationRedAirpurifier,
+        recommendationRedMask,
+        recommendationRedSport,
+        recommendationRedWindow
+    ]
     }
     else if (data === 6) {
-        return ['violet', '#ab19ab', "#ffffff", 'Chất lượng ko khí ở nguy hiểm']
+        return ['violet',
+        '#ab19ab',
+        "#ffffff",
+        'Chất lượng ko khí ở nguy hiểm',
+        violetFace,
+        recommendationPurpleAirpurifier,
+        recommendationPurpleMask,
+        recommendationPurpleSport,
+        recommendationPurpleWindow
+    ]
     }
 }
 
-
-// function ModalBodyDisplay(Data, typeOfPollution) {
-//     <div dangerouslySetInnerHTML={{
-//         __html: (() => {
-//             let result = `<table>
-//           <tbody>
-//           <tr>
-//           <td class="column1">${keys[2]}: ${props.data[id][keys[2]].iso.slice(0, 10)}</td>`
-//             if (color[1] === "#4cb84c") {
-//                 result += `<td class="column2"><u>${color[4]}</u> so với kiểu dữ liệu bạn quan tâm</td>`
-//             }
-//             else if (color[1] !== "#4cb84c") {
-//                 result += `<td class="column2"><u>${color[4]}</u> so với kiểu dữ liệu bạn quan tâm</td>`
-//             }
-
-
-//             for (let index = 3; index < keys.length; index++) {
-//                 if (keys[index] === mainPollutant[1]) {
-//                     result += `<tr>
-//               <td class="column1"><b>${keys[index].toUpperCase()}: ${props.data[id][keys[index]].value}</b></td>
-//               <td class="column2"><div class="progress custom-progress-${checkProgress(constructor, keys[index], props.data[id][keys[index]].value)[1]}">
-//                 <div class="progress-bar custom-progress-bar-${checkProgress(constructor, keys[index], props.data[id][keys[index]].value)[1]} progress-bar" role="progressbar"  style="width: ${checkProgress(constructor, keys[index], props.data[id][keys[index]].value)[0]}%" </div>
-//               </div></td>
-//               </tr>`;
-//                 }
-//                 else {
-//                     result += `<tr>
-//               <td class="column1">${keys[index].toUpperCase()}: ${props.data[id][keys[index]].value}</td>
-//               <td class="column2"><div class="progress custom-progress-${checkProgress(constructor, keys[index], props.data[id][keys[index]].value)[1]}">
-//                 <div class="progress-bar custom-progress-bar-${checkProgress(constructor, keys[index], props.data[id][keys[index]].value)[1]} progress-bar" role="progressbar"  style="width: ${checkProgress(constructor, keys[index], props.data[id][keys[index]].value)[0]}%" </div>
-//               </div></td>
-//               </tr>`;
-//                 }
-//             }
-//             result += `</table>`
-
-//             return result;
-//         })()
-//     }} />);
-// }
-export { CaculationDate, AddFilter, GetMainPollution, }
+export { CaculationDate, AddFilter, GetMainPollution, GetColorOfMarker}

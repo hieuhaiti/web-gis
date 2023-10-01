@@ -1,102 +1,128 @@
-/* setup sidenav */
-
-.sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-}
-
-.sidenav .date-control input {
-    text-align: center;
-    font-size: 25px;
-    color: #ffffff;
-    display: inline-block;
-    background-color: #5a5a5a52;
+table {
+    border-collapse: collapse;
+    caption-side: bottom;
     width: 100%;
-    border: none;
+}
+
+tr {
+    border: 0 solid;
+    border-color: inherit;
+}
+
+td {
+    font-size: large;
+}
+
+td.column1 {
+    width: 20%;
+}
+
+td.column2 {
+    width: 80%;
+}
+
+td.imageRecomment {
+    width: 10%;
+}
+
+td.recomment {
+    width: 40%;
+}
+
+div.recommendation {
+    margin: 2%;
+}
+
+.custom-progress-1 {
+    background-color: #c6f3c6 !important;
+}
+
+.custom-progress-2 {
+    background-color: rgb(243, 243, 175) !important;
+}
+
+.custom-progress-3 {
+    background-color: rgb(245, 217, 165) !important;
+}
+
+.custom-progress-4 {
+    background-color: rgb(234, 234, 234) !important;
+}
+
+.custom-progress-5 {
+    background-color: #fdbaba !important;
+}
+
+.custom-progress-bar-1 {
+    background-color: #4cb84c !important;
+}
+
+.custom-progress-bar-2 {
+    background-color: rgb(232, 232, 22) !important;
+}
+
+.custom-progress-bar-3 {
+    background-color: orange !important;
+}
+
+.custom-progress-bar-4 {
+    background-color: rgb(92, 92, 92) !important;
+}
+
+.custom-progress-bar-5 {
+    background-color: #d81e1e !important;
+}
+
+.custom-progress-bar-6 {
+    background-color: #ab19ab !important;
+}
+
+
+div.modal-body {
+    display: table;
+    width: 100%;
+    height: fit-content;
+    grid-template-rows: 33% 33% 33%;
+    grid-template-columns: 70% 30%;
 
 }
 
-.sidenav .closebtn {
-    color: #818181;
-
+/* div.modal-detail {
+    width: fit-content;
+    height: fit-content;
+    display: block;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
 
-.sidenav .closebtn:hover {
-    color: #f1f1f1;
+div.recommendation {
+    width: fit-content;
+    height: fit-content;
+    display: block;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
 }
 
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+div.bar-chart {
+    width: fit-content;
+    height: fit-content;
+    display: block;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
 }
 
-#main {
-    transition: margin-left .5s;
-    padding: 16px;
-}
-
-@media screen and (max-height: 450px) {
-    .sidenav {
-        padding-top: 15px;
-    }
-}
-
-/* end sidenav */
-
-
-/* setup accordion */
-.accordion-item, .accordion-header {
-    background-color: #111 !important;
-    border: 0px !important;
-}
-
-
-
-.accordion-header button{
-    color: rgb(255, 255, 255) !important;
-    background-color: #111 !important;
-    font-size: 20px;
-}
-
-.accordion-toggle {
-    border-right: none;
-}
-
-.accordion-button {
-    justify-content:center;
-}
-
-.accordion-button:hover {
-    background-color: #565656!important;
-}
-
-.accordion-button:focus {
-    border: none !important;
-    background: #565656 !important;
-    box-shadow: none;
-}
-
-.accordion-button::after {
-    background-color: #111 !important;
-    display: none;
-}
-
-.accordion-body{
-    border: none !important;
-}
-
-
-option {
-    color: #333333;
-}
+div.pie-chart {
+    width: fit-content;
+    height: fit-content;
+    display: block;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
+} */

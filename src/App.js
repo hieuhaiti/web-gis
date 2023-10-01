@@ -51,32 +51,17 @@ function App() {
   const [showCustomModal, setShowCustomModal] = useState(false);
   const [dataCustomModal, setDataCustomModal] = useState(null);
 
+  const [navigationConfig, setNavigationConfig] = useState(0);
+
   let showSideNav = false
-  let navigationInitialized = false
   let mainPollutant = "tsp"
 
   const [fromDate, setFromDate] = useState('2020-12');
   const [toDate, setToDate] = useState(CaculationDate(fromDate));
 
-
-  useEffect(() => {
-    if (dataSource === null) {
-      // Fetch data and setDataSource only when it's null
-      GetDataToGeojson(fromDate, toDate)
-        .then((data) => {
-          console.log(data);
-          setDataSource(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }
-  }); // Provide an empty dependency array
-
   useEffect(() => {
     setToDate(CaculationDate(fromDate))
   }, [fromDate]);
-
 
   useEffect(() => {
     if (map.current) return;
@@ -89,12 +74,91 @@ function App() {
       zoom: 13,
     });
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right")
+    // load img
+    map.current.loadImage(
+      markerIcon2xGreen,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-green', image)
+      });
+
+
+    map.current.loadImage(
+      markerIcon2xYellow,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-yellow', image)
+      });
+
+
+    map.current.loadImage(
+      markerIcon2xRed,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-red', image)
+      });
+
+    map.current.loadImage(
+      markerIcon2xBlue,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-blue', image)
+      });
+
+    map.current.loadImage(
+      markerIcon2xGrey,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-grey', image)
+      });
+
+    map.current.loadImage(
+      markerIcon2xOrange,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-orange', image)
+      });
+
+    map.current.loadImage(
+      markerIcon2xViolet,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-violet', image)
+      });
+
+
+    map.current.loadImage(
+      markerIcon2xBlue,
+      (error, image) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-blue', image)
+
+      })
 
   })
+
   useEffect(() => {
+
+    GetDataToGeojson(fromDate, toDate)
+      .then((data) => {
+        setDataSource(data);
+        if (map.current.getSource('test')) {
+          map.current.getSource('test').setData(data)
+          console.log(this);
+        }
+        return
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+  }, [toDate]); // Provide an empty dependency array
+
+
+  useEffect(() => {
+
     if (dataSource === null) return;
-    if (map.current.getSource("test")) return;
-    console.log("load source");
+    if (map.current.getSource('test')) return;
 
     map.current.on('load', function () {
       // load source map
@@ -105,150 +169,6 @@ function App() {
         clusterMaxZoom: 11, // Max zoom to cluster points on
         clusterRadius: 40, // Radius of each cluster when clustering points (defaults to 50)
       })
-      // load img
-      map.current.loadImage(
-        markerIcon2xGreen,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-green', image)
-        });
-
-
-      map.current.loadImage(
-        markerIcon2xYellow,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-yellow', image)
-        });
-
-
-      map.current.loadImage(
-        markerIcon2xRed,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-red', image)
-        });
-
-      map.current.loadImage(
-        markerIcon2xBlue,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-blue', image)
-        });
-
-      map.current.loadImage(
-        markerIcon2xGrey,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-grey', image)
-        });
-
-      map.current.loadImage(
-        markerIcon2xOrange,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-orange', image)
-        });
-
-      map.current.loadImage(
-        markerIcon2xViolet,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-violet', image)
-        });
-
-
-      map.current.loadImage(
-        markerIcon2xBlue,
-        (error, image) => {
-          if (error) throw error;
-          map.current.addImage('custom-marker-blue', image)
-
-
-          // map.current.addLayer({
-          //   id: 'unclustered-point-test',
-          //   type: 'symbol',
-          //   source: 'test',
-          //   filter: ['!', ['has', 'point_count']],
-          //   layout: {
-          //     'visibility': 'visible',
-          //     'icon-image': [
-          //       ['case',
-          //         ['==', ['get', { mainPollutant }], 6],
-          //         `custom-marker-violet`,
-          //         ['==', ['get', { mainPollutant }], 5],
-          //         `custom-marker-red`,
-          //         ['==', ['get', { mainPollutant }], 4],
-          //         `custom-marker-grey`,
-          //         ['==', ['get', { mainPollutant }], 3],
-          //         `custom-marker-yellow`,
-          //         ['==', ['get', { mainPollutant }], 2],
-          //         `custom-marker-green`,
-          //         ['==', ['get', { mainPollutant }], 1],
-          //         `custom-marker-blue`,
-          //       ],
-          //     ],
-          //     'icon-size': 0.3,
-          //     // get the title name from the source's "title" property
-          //     'text-field': ['get', 'address'],
-          //     // 'text-field': ['get', 'address',['get', 'date']],
-          //     'text-font': [
-          //       'Open Sans Semibold',
-          //       'Arial Unicode MS Bold'
-          //     ],
-          //     'text-offset': [0, 1.25],
-          //     'text-anchor': 'top',
-          //     'text-size': 10
-          //   }
-          // });
-
-          // map.current.addLayer({
-          //   id: 'unclustered-point-test',
-          //   type: 'symbol',
-          //   source: 'test',
-          //   filter: ['!', ['has', 'point_count']],
-          //   layout: {
-          //     'visibility': 'visible',
-          //     'icon-image': `custom-marker-blue`,
-          //     'icon-size': 0.3,
-          //     // get the title name from the source's "title" property
-          //     'text-field': ['get', 'address'],
-          //     // 'text-field': ['get', 'address',['get', 'date']],
-          //     'text-font': [
-          //       'Open Sans Semibold',
-          //       'Arial Unicode MS Bold'
-          //     ],
-          //     'text-offset': [0, 1.25],
-          //     'text-anchor': 'top',
-          //     'text-size': 10,
-          //     'paint': {
-          //       'icon-color': [
-          //         'match', // Use the 'match' expression: https://docs.mapbox.com/style-spec/reference/expressions/#match
-          //         ['get', "tsp",['get', "value"]], // Use the result 'STORE_TYPE' property
-          //         '1',
-          //         'green',
-          //         '2',
-          //         'yellow',
-          //         '3',
-          //         'orange',
-          //         '4',
-          //         'grey',
-          //         '5',
-          //         'red',
-          //         '6',
-          //         'violet',
-
-          //         'blue' // any other store type
-          //       ]
-          //     }
-          //   }
-          // });
-
-        })
-    })
-
-    map.current.on('idle', () => {
-      if (navigationInitialized) return;
       const custom_marker_red = map.current.hasImage("custom-marker-red");
       const custom_marker_blue = map.current.hasImage("custom-marker-blue");
       const custom_marker_grey = map.current.hasImage("custom-marker-grey");
@@ -317,38 +237,20 @@ function App() {
           filter: ['!', ['has', 'point_count']],
           layout: {
             'visibility': 'visible',
-            // 'icon-image': [
-            //   ['case',
-            //     ['==', ['get', "value", ['get', { mainPollutant }]], 6],
-            //     `custom-marker-violet`,
-            //     ['==', ['get', "value", ['get', { mainPollutant }]], 5],
-            //     `custom-marker-red`,
-            //     ['==', ['get', "value", ['get', { mainPollutant }]], 4],
-            //     `custom-marker-grey`,
-            //     ['==', ['get', "value", ['get', { mainPollutant }]], 3],
-            //     `custom-marker-orange`,
-            //     ['==', ['get', "value", ['get', { mainPollutant }]], 2],
-            //     `custom-marker-yellow`,
-            //     ['==', ['get', "value", ['get', { mainPollutant }]], 1],
-            //     `custom-marker-green`,
-            //     `custom-marker-blue`,
-            //   ],
-            // ],
-
             'icon-image':
               [
                 'case',
-                ['==', ['get', 'result',['get', 'tsp']], 6],
+                ['==', ['get', 'result', ['get', 'tsp']], 6],
                 'custom-marker-violet',
-                ['==', ['get', 'result',['get', 'tsp']], 5],
+                ['==', ['get', 'result', ['get', 'tsp']], 5],
                 'custom-marker-red',
-                ['==', ['get', 'result',['get', 'tsp']], 4],
+                ['==', ['get', 'result', ['get', 'tsp']], 4],
                 'custom-marker-grey',
-                ['==', ['get', 'result',['get', 'tsp']], 3],
+                ['==', ['get', 'result', ['get', 'tsp']], 3],
                 'custom-marker-orange',
-                ['==', ['get', 'result',['get', 'tsp']], 2],
+                ['==', ['get', 'result', ['get', 'tsp']], 2],
                 'custom-marker-yellow',
-                ['==', ['get', 'result',['get', 'tsp']], 1],
+                ['==', ['get', 'result', ['get', 'tsp']], 1],
                 'custom-marker-green',
                 'custom-marker-blue',
               ],
@@ -364,72 +266,39 @@ function App() {
           }
         });
       }
+      setNavigationConfig(
+        new layerControlGrouped({
+          collapsed: false,
+          layers: [
+            {
+              id: "cluster-count-test",
+              hidden: true,
+              parent: 'clusters-test',
+              group: "trạm quan trắc",
+              directory: "trạm quan trắc",
 
-      const suffixes_arr = ['test'];
-      const prefix_arr = ["unclustered-point-", "clusters-", "cluster-count-"];
-      let allLayersId = {};
+            },
+            {
+              id: "clusters-test",
+              name: "clusters",
+              hidden: false,
+              children: true,
+              group: "trạm quan trắc",
+              directory: "trạm quan trắc",
 
-      for (const suffixes of suffixes_arr) {
-        const layerIds = [];
-        for (const prefix of prefix_arr) {
-          const LayerId = prefix + suffixes;
-          const layerExists = map.current.getLayer(LayerId);
+            },
+            {
+              id: "unclustered-point-test",
+              name: "point",
+              group: "trạm quan trắc",
+              directory: "trạm quan trắc",
 
-          // If these all layers were not added to the map, abort
-          if (!layerExists) {
-            return;
-          }
-          layerIds.push(LayerId);
-        }
-        allLayersId[suffixes] = layerIds;
-      }
-      var config = {
-        collapsed: false,
-        layers: [
-          {
-            id: "cluster-count-test",
-            hidden: true,
-            parent: 'clusters-test',
-            group: "trạm quan trắc",
-            directory: "trạm quan trắc",
-
-          },
-          {
-            id: "clusters-test",
-            name: "clusters",
-            hidden: false,
-            children: true,
-            group: "trạm quan trắc",
-            directory: "trạm quan trắc",
-
-          },
-          {
-            id: "unclustered-point-test",
-            name: "point",
-            group: "trạm quan trắc",
-            directory: "trạm quan trắc",
-
-          },
-        ]
-      }
-      map.current.addControl(new layerControlGrouped(config), "top-left");
-      let layerFilter = ["unclustered-point-test"]
-
-      layerFilter.forEach(element => {
-        let filter = AddFilter(element)
-        filter.onclick = () => {
-          showSideNav = !showSideNav;
-
-          if (showSideNav) {
-            openNav()
-            return
-          }
-          closeNav()
-          return
-        }
-      });
-      navigationInitialized = true;
+            },
+          ]
+        })
+      )
     })
+
 
     // set event layer
     // inspect a cluster on click
@@ -478,12 +347,60 @@ function App() {
       ], () => {
         map.current.getCanvas().style.cursor = '';
       });
-
     // end set envet layer
+  }, [dataSource])
+
+  useEffect(() => {
+
+    if (!map.current) return; //kiểm tra xem nếu chưa có bản đồ thì return
+    if (!navigationConfig) return;
+
+    map.current.on('idle', () => {
+      const suffixes_arr = ['test'];
+      const prefix_arr = ["unclustered-point-", "clusters-", "cluster-count-"];
+      let allLayersId = {};
+
+      for (const suffixes of suffixes_arr) {
+        const layerIds = [];
+        for (const prefix of prefix_arr) {
+          const LayerId = prefix + suffixes;
+          const layerExists = map.current.getLayer(LayerId);
+
+          // If these all layers were not added to the map, abort
+          if (!layerExists) {
+            return;
+          }
+          layerIds.push(LayerId);
+        }
+        allLayersId[suffixes] = layerIds;
+      }
+      if (!map.current.hasControl(navigationConfig)) {
+        map.current.addControl(navigationConfig, "top-left");
+        let layerFilter = ["unclustered-point-test"]
+
+        layerFilter.forEach(element => {
+          let filter = AddFilter(element)
+          filter.onclick = () => {
+            showSideNav = !showSideNav;
+
+            if (showSideNav) {
+              openNav()
+              return
+            }
+            closeNav()
+            return
+          }
+        });
+      }
+
+    })
+
     document.querySelector(".closebtn").onclick = () => closeNav();
 
     function openNav() {
-      document.querySelector("#mySidenav").style.width = "250px";
+      let sideNavWidth = 250;
+      document.documentElement.style.setProperty('--bs-sidenav-width', `${sideNavWidth - 50}px`);
+      document.querySelector("#mySidenav").style.width = `${sideNavWidth}px`;
       document.querySelector(".container").style.marginLeft = "250px";
     }
 
@@ -491,8 +408,7 @@ function App() {
       document.querySelector("#mySidenav").style.width = "0";
       document.querySelector(".container").style.marginLeft = "0";
     }
-
-  }, [dataSource])
+  }, [navigationConfig])
 
   return (
     <div>
@@ -514,7 +430,6 @@ function App() {
         SetDate={(e) => {
           const year = e.getFullYear();
           const month = e.getMonth() + 1; // Tháng bắt đầu từ 0, nên cần cộng thêm 1
-
           const formattedDate = `${year}-${month}`;
           setFromDate(formattedDate)
         }}

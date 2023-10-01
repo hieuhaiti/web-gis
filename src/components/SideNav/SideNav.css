@@ -1,0 +1,100 @@
+/* setup sidenav */
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav .date-control input {
+    text-align: center;
+    font-size: 25px;
+    color: #ffffff;
+    display: inline-block;
+    background-color: #5a5a5a52;
+    width: 100%;
+    border: none;
+
+}
+
+.sidenav .closebtn {
+    color: #818181;
+
+}
+
+.sidenav .closebtn:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: block;
+    top: 0;
+    right: 0;
+    font-size: 36px;
+    /* margin-left: 50px; */
+    margin-left: var(--bs-sidenav-width);
+}
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+}
+
+/* end sidenav */
+
+
+/* setup accordion */
+.accordion-item,
+.accordion-header {
+    background-color: #111 !important;
+    border: 0px !important;
+}
+
+
+
+.accordion-header button {
+    color: rgb(255, 255, 255) !important;
+    background-color: #111 !important;
+    font-size: 20px;
+}
+
+.accordion-toggle {
+    border-right: none;
+}
+
+.accordion-button {
+    justify-content: center;
+}
+
+.accordion-button:hover {
+    background-color: #565656 !important;
+}
+
+.accordion-button:focus {
+    border: none !important;
+    background: #565656 !important;
+    box-shadow: none;
+}
+
+.accordion-button::after {
+    background-color: #111 !important;
+    display: none;
+}
+
+.accordion-body {
+    border: none !important;
+}
+
+
+option {
+    color: #333333;
+}

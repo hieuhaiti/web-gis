@@ -1,18 +1,13 @@
 import axios from 'axios';
 
 
-
-
-
-
 const url = 'https://environment-admin.onrender.com/api/v1/stations/airs/'
 
 
 async function GetDataToGeojson(fromDate, toDate) {
     let urlFilter = url + `filter?fromdate=${fromDate}&todate=${toDate}`
-    console.log(urlFilter);
     try {
-
+        console.log(urlFilter);
         const response = await axios.get(urlFilter);
         const data_Api = response.data;
         const geojson = {
@@ -107,4 +102,4 @@ async function GetAllDataByAddress(Address, fromDate, toDate, mainPollutant) {
         throw error; // Rethrow the error to be handled elsewhere if needed
     }
 }
-export { GetDataToGeojson, GetDataByAddress};
+export { GetDataToGeojson, GetDataByAddress };
